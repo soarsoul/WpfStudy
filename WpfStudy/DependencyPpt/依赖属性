@@ -1,0 +1,41 @@
+﻿1.依赖属性主要有以下三个优点：
+.依赖属性加入了属性变化通知、限制、验证等功能。这样可以使我们更方便地实现应用，同时大大减少了代码量
+.节约内存：在WinForm中，每个UI控件的属性都赋予了初始值，这样每个相同的控件在内存中都会保存一份初始值。而WPF依赖属性很好地解决了这个问题，它内部实现使用哈希表存储机制，对多个相同控件的相同属性的值都只保存一份
+.支持多种提供对象：可以通过多种方式来设置依赖属性的值。可以配合表达式、样式和绑定来对依赖属性设置值
+
+2.依赖属性的定义(Person.cs)
+1)让依赖属性的所在类型继承自DependencyObject类。
+2)使用public static 声明一个DependencyProperty的变量，该变量就是真正的依赖属性。
+3)在类型的静态构造函数中通过Register方法完成依赖属性的元数据注册。
+4)提供一个依赖属性的包装属性，通过这个属性来完成对依赖属性的读写操作。
+
+3.依赖属性的优先级(priority.xaml)
+ WPF允许在多个地方设置依赖属性的值，则自然就涉及到依赖属性获取值的优先级问题
+ 高=》低  动画->绑定->本地值->自定义style Trigger->自定义template trigger->自定义style setter->默认style trigger->默认style setter->继承值->默认值
+
+4.依赖属性的继承(PptInherit.xaml)
+ 依赖属性是可以被继承的，即父元素的相关设置会自动传递给所有的子元素.并不是所有元素都支持属性值继承的，如StatusBar、Tooptip和Menu控件。另外，StatusBar等控件截获了从父元素继承来的属性，并且该属性也不会影响StatusBar控件的子元素
+ 通过AddOwer方法可以依赖属性的继承，把自定义的依赖属性设置为可被其他控件继承(TestAddOwner.xaml)
+
+5.只读依赖属性(PptReadonly.xaml)
+ 只读依赖属性仅仅是用DependencyProperty.RegisterReadonly替换了DependencyProperty.Register而已
+
+6.附加属性(AttachTest.xaml)
+ 附加是一种特殊的依赖属性。它允许给一个对象添加一个值，而该对象可能对这个值一无所知。附加属性最常见的例子就是布局容器中DockPanel类中的Dock附加属性和Grid类中Row和Column附加属性
+ 只是用RegisterAttached方法代替了Register方法
+
+7.依赖属性验证和强制(ValidateTest.xaml)
+ WPF中提供了两种方法来用于验证依赖属性的值:
+ .ValidateValueCallback:该回调函数可以接受或拒绝新值。该值可作为DependencyProperty.Register方法的一个参数。
+ .CoerceValueCallback:该回调函数可将新值强制修改为可被接受的值。该回调函数可作为PropertyMetadata构造函数参数进行传递。
+ 当应用程序设置一个依赖属性时，所涉及的验证过程如下所示：
+ 1)首先，CoerceValueCallback方法可以修改提供的值或返回DependencyProperty.UnsetValue
+ 2)如果CoerceValueCallback方法强制修改了提供的值，此时会激活ValidateValueCallback方法进行验证，如果该方法返回为true，表示该值合法，被认为可被接受的，否则拒绝该值。不像CoerceValueCallback方法，ValidateValueCallback方法不能访问设置属性的实际对象，这意味着你不能检查其他属性值。即该方法中不能对类的其他属性值进行访问。
+ 3)如果上面两个阶段都成功的话，最后会触发PropertyChangedCallback方法来触发依赖属性值的更改。
+
+8.依赖属性的监听(PptListener.xaml)
+ 可以用两种方法对依赖属性的改变进行监听。这两种方法是：
+ 1)使用DependencyPropertyDescriptor类
+   获取DependencyPropertyDescriptor并调用AddValueChange方法为其绑定一个回调函数
+ 2)使用OverrideMetadata的方式
+   定义一个派生于依赖属性所在的类，然后重写依赖属性的元数据并传递一个PropertyChangedCallback参数即可

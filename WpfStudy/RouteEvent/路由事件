@@ -1,0 +1,46 @@
+﻿１、如何定义路由事件
+   1）事件定义
+     public static readonly RoutedEvent ClickEvent;
+   2）事件注册，Button按钮的Click事件是继承于ButtonBase基类的
+     ClickEvent = EventManager.RegisterRoutedEvent("Click", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(ButtonBase));
+   3）传统事件包装
+     public event RoutedEventHandler Click
+    {
+        add
+        {
+            base.AddHandler(ClickEvent, value);
+        }
+        remove
+        {
+            base.RemoveHandler(ClickEvent, value);
+        }
+    }
+
+2、共享路由事件
+  可以在类之间共享路由事件的定义。即实现路由事件的继承。例如UIElement类和ContentElement类都使用了MouseUp事件，
+  但MouseUp事件是由System.Windows.Input.Mouse类定义的。UIElement类和ContentElement类只是通过RouteEvent.AddOwner方法重用了MouseUp事件
+  _typeofThis = typeof(UIElement);
+  MouseUpEvent = Mouse.MouseUpEvent.AddOwner(_typeofThis);
+
+3、引发和处理路由事件
+　尽管路由事件通过传统的.NET事件进行包装，但路由事件并不是通过.NET事件触发的，而是使用RaiseEvent方法触发事件
+　RoutedEventArgs e = new RoutedEventArgs(ClickEvent, this);
+　base.RaiseEvent(e)
+　而在WinForm中，Button的Click事件是通过调用委托进行触发的
+　protected virtual void OnClick(EventArgs e){　
+      EventHandler handler = (EventHandler)base.Events[EventClick];
+	  handler(this, e);  }
+
+４、路由事件的特殊性：在于其传递性，WPF中的路由事件分为三种
+  1）与普通的.NET事件类似的直接路由事件(Direct event)。它源自一个元素，并且不传递给其他元素
+  2）在包含层次中向上传递的冒泡路由事件(Bubbling event)。MouseUp事件是向上传递。首先被单击的元素触发，接下来就是该元素的父元素触发，依此类推，直到WPF到达元素树的顶部为止
+  3）在包含层次中向下传递的隧道路由事件(Tunneling event)。隧道路由事件都是以单词Preview开头。首先是窗口，然后是更具体的容器，直到到达按下键时具有焦点的元素
+  当使用EventManager.RegisterEvent方法注册一个路由事件时，需要传递一个RoutingStrategy枚举值来标识希望应用于事件的事件行为
+  RoutedEventArgs.Handled=true时，不管是冒泡还是隧道事件，它还是会继续传播的，只是对应的事件不会再处理了。
+    如果想继续响应相应事件的话，可以通过AddHandler方法进行注册，tackpanel1.AddHandler(UIElement.MouseUpEvent, new RoutedEventHandler(SomethingClick), true);
+  需要注意的一点是：如果将隧道路由事件标记为已处理的（e.Handled=true)，那么冒泡路由事件就不会发生。这是因为这两个事件共享同一个RoutedEventArgs类的实例
+
+5、附加事件:附加事件的宿主是Binding类、Mouse类、KeyBoard类这种无法在界面显示的类对象
+　假设有这样一个场景，StackPanel面板中包含了一堆按钮，并且希望在一个事件处理程序中处理所有这些按钮的单击事件。
+　首先想到的办法就是将每个按钮的Click事件关联到同一个事件处理程序。但是Click事件支持事件冒泡，从而有一种更好的解决办法。
+　可以在更高层次元素来关联Click事件来处理所有按钮的单击事件

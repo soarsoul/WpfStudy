@@ -1,0 +1,27 @@
+﻿WPF布局包括两个阶段：一个测量（measure）阶段和一个排列(arrange)阶段.每个Panel都提供了自己的MeasureOverride和ArrangeOverride方法
+1,Canvas 布局控件
+  Canvas面板是最轻量级的布局容器，它不会自动调整内部元素的排列和大小，不指定元素位置，元素将默认显示在画布的左上方。Canvas主要用来画图
+
+2,StackPanel 布局控件
+  将子元素按照堆栈的形式一一排列，可以通过设置StackPanel的Orientation属性设置两种排列方式：横排（Horizontal，该值为默认值）和竖排（Vertical）。纵向的StackPanel每个元素默认宽度与面板一样宽，反之横向是高度和面板一样高
+
+3,WrapPanel 布局控件
+  WrapPanel面板在可能的空间中，一次以一行或一列的方式布置控件。默认情况下，WrapPanel.Orientation属性设置为Horizontal，控件从左向右进行排列，
+  然后再在下一行中排列，但你可将WrapPanel.Orientation设置为Vertical，从而在多个列中放置元素。与StackPanel面板不同，WrapPanel面板实际上用来控制用户界面中一小部分的布局细节，并非用于控制整个窗口布局。
+
+4,DockPanel 布局控件
+  DockPanel面板定义一个区域，在此区域中，你可以使子元素通过锚点的形式进行排列.对于在DockPanel中的元素的停靠可以通过Panel.Dock的附加属性来设置，如果设置LastChildFill属性为true，则最后一个元素将填充剩余的所有空间
+
+5,Grid 布局控件 
+  Grid比起其他Panel，功能是最多最为复杂的布局控件。它由<Grid.ColumnDefinitions>列元素集合和<Grid.RowDefinitions>行元素集合两种元素组成。而放在Grid面板中的元素必须显式采用附加属性定义其所在行和列，否则元素均默认放置在第0行第0列
+
+6,UniformGrid 布局控件
+  UniformGrid是Grid简化版本，不像Grid面板，UniformGrid不需要预先定义行集合和列集合，反而，通过简单设置Rows和Columns属性来设置尺寸。每个单元格始终具有相同的大小。UniformGrid每个单元格只能容纳一个元素，将自动按照在其内部的元素个数，自动创建行和列，并通过保存相同的行列数
+
+7,ScrollViewer 控件
+  可以利用ScrollViewer控件可以方便地使应用程序中的内容具备滚动功能
+
+8,布局综合运用(MultiPanels.xaml)
+
+9,自定义布局控件(TestCustomPanel.xaml)
+  布局系统的工作原理是先测量后排列，测量即是确定面板需要多大空间，排列则是定义面板内子元素的排列规则。所以，要实现自定义布局控件，需要继承于Panel类并重写MeasureOverride和ArrangeOverride方法即可
