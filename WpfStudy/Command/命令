@@ -1,0 +1,37 @@
+﻿WPF命令使得命令源(即命令发送者，也称调用程序)和命令目标（即命令执行者，也称处理程序）分离
+事件和命令是处理问题的两种方式，它们之间根本不存在冲突的，并且WPF命令中使用了路由事件。所以准确地说WPF命令应该是路由命令
+另外，WPF命令除了使命令源和命令目标分割的优点外，它还具有另一个优点：
+   使得控件的启用状态和相应的命令状态保持同步，即命令被禁用时，此时绑定命令的控件也会被禁用。
+
+1. WPF命令模型具有4个重要元素：
+命令——命令表示一个程序任务，并且可跟踪该任务是否能被执行。然而，命令实际上不包含执行应用程序的代码，真正处理程序在命令目标中。
+命令源——命令源触发命令，即命令的发送者。例如Button、MenuItem等控件都是命令源，单击它们都会执行绑定的命令。
+命令目标——命令目标是在其中执行命令的元素。如Copy命令可以在TextBox控件中复制文本。
+命令绑定——前面说过，命令是不包含执行程序的代码的，真正处理程序存在于命令目标中。那命令是怎样映射到处理程序中的呢？这个过程就是通过命令绑定来完成的，命令绑定完成的就是红娘牵线的作用
+
+2.命令类继承
+WPF命令模型的核心就在于ICommand接口.当自定义命令时，不会直接去实现ICommand接口。而是使用RoutedCommand类，该类实是WPF中唯一现了ICommand接口的类。
+所有WPF命令都是RoutedCommand类或其派生类的实例。然而程序中处理的大部分命令不是RoutedCommand对象，而是RoutedUICommand对象。RoutedUICommand类派生与RoutedCommand类
+
+3.为什么说WPF命令是路由的
+实际上，RoutedCommand上Execute和CanExecute方法并没有包含命令的处理逻辑，而是将触发遍历元素树的事件来查找具有CommandBinding的对象。
+而真正命令的处理程序包含在CommandBinding的事件处理程序中。所以说WPF命令是路由命令
+该事件会在元素树上查找CommandBinding对象，然后去调用CommandBinding的CanExecute和Execute来判断是否可执行命令和如何执行命令
+
+4.已定义命令
+WPF中提供了一组已定义命令，命令包括以下类：ApplicationCommands、NavigationCommands、MediaCommands、EditingCommands 以及ComponentCommands。 这些类提供诸如 Cut、BrowseBack、BrowseForward、Play、Stop 和 Pause 等命令
+
+5.使用命令(UseCommand.xaml):定义一个绑定，多个目标源可以调用
+    <!-- 定义窗口命令绑定，绑定的命令是New命令，处理程序是NewCommand -->
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.New" Executed="NewCommand"/>
+    </Window.CommandBindings>
+
+6.自定义命令(CustomCommand.xaml,DataCommands.cs)
+
+7.实现可撤销的命令程序（CommandsMonitor.xaml）
+WPF命令模型缺少的一个特征就是Undo命令，尽管提供了一个ApplicationCommands.Undo命令，但是该命令通常被用于编辑控件，如TextBox控件。
+如果希望支持应用程序范围内的Undo操作，就需要在内部跟踪以前的命令，并且触发Undo操作时还原该命令
+实现原理就是保持用一个集合对象保存之前所有执行过的命令，当触发Undo操作时，还要上一个命令的状态。这里除了需要保存执行过的命令外，还需要保存触发命令的控件以及状态，所以我们需要抽象出一个类来保存这些属性，我们取名这个类为CommandHistoryItem。
+为了保存命令和命令的状态，自然就需要在完成命令之前进行保存，所以自然联想到是否有Preview之类的事件呢？实际上确实有，这个事件就是PreviewExecutedEvent，所以我们需要在窗口加载完成后把这个事件注册到窗口上，这里在触发这个事件的时候就可以保存即将要执行的命令、命令源和命令源的内容。
+另外，之前的命令自然需要保存到一个列表中，这里使用ListBox控件作为这个列表，如果不希望用户在界面上看到之前的命令列表的话，也可以使用List等集合容器

@@ -63,6 +63,16 @@
       <DependentUpon>BindingElement.xaml</DependentUpon>
     </Compile>
     <Compile Include="Binding\Student.cs" />
+    <Compile Include="Command\CommandsMonitor.xaml.cs">
+      <DependentUpon>CommandsMonitor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Command\CustomCommand.xaml.cs">
+      <DependentUpon>CustomCommand.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Command\DataCommands.cs" />
+    <Compile Include="Command\UseCommand.xaml.cs">
+      <DependentUpon>UseCommand.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DependencyPpt\AddOwner\CustomStackPanel.cs" />
     <Compile Include="DependencyPpt\AddOwner\TestAddOwner.xaml.cs">
       <DependentUpon>TestAddOwner.xaml</DependentUpon>
@@ -122,6 +132,18 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Binding\BindingElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Command\CommandsMonitor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Command\CustomCommand.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Command\UseCommand.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -221,6 +243,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Binding\绑定" />
+    <None Include="Command\命令" />
     <None Include="DependencyPpt\依赖属性" />
     <None Include="PanelControl\布局控件" />
     <None Include="Properties\Settings.settings">

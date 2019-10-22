@@ -1,0 +1,41 @@
+﻿<Window x:Class="WpfStudy.Command.CommandsMonitor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfStudy.Command"
+        mc:Ignorable="d"
+        Title="CommandsMonitor" Height="450" Width="800">
+    <Window.CommandBindings>
+        <CommandBinding Command="local:CommandsMonitor.Undo"
+                        Executed="UndoCommand_Executed"
+                        CanExecute="UndoCommand_CanExecuted"/>
+    </Window.CommandBindings>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <ToolBarTray Grid.Row="0">
+            <ToolBar>
+                <Button Command="ApplicationCommands.Cut">Cut</Button>
+                <Button Command="ApplicationCommands.Copy">Copy</Button>
+                <Button Command="ApplicationCommands.Paste">Paste</Button>
+            </ToolBar>
+            <ToolBar>
+                <Button Command="local:CommandsMonitor.Undo">Reverse Last Command</Button>
+            </ToolBar>
+        </ToolBarTray>
+
+        <TextBox Margin="5" Grid.Row="1"
+                 TextWrapping="Wrap" AcceptsReturn="True">
+        </TextBox>
+        <TextBox Margin="5" Grid.Row="2"
+                 TextWrapping="Wrap" AcceptsReturn="True">
+        </TextBox>
+
+        <ListBox Grid.Row="3" Name="lstHistory" Margin="5" DisplayMemberPath="CommandName"></ListBox>
+    </Grid>
+</Window>
