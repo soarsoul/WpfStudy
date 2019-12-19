@@ -38,7 +38,7 @@ namespace WpfStudy.Command
 
             //按下菜单栏按钮时，PreviewExecutedEvent事件会被触发2次，即CommandExecuted事件处理程序被触发2次
             //一次是菜单栏按钮本身，一次是目标源触发命令的执行，所以在CommandExecuted要过滤掉不关心的命令源
-            this.AddHandler(CommandManager.PreviewExecutedEvent,new ExecutedRoutedEventHandler( ));
+            this.AddHandler(CommandManager.PreviewExecutedEvent,new ExecutedRoutedEventHandler(CommandExecuted));
         }
 
         private void CommandExecuted(object sender, ExecutedRoutedEventArgs e)

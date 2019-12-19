@@ -7,7 +7,7 @@ WPF绑定可以理解为一种关系，该关系告诉WPF从一个源对象提�
   {Binding ElementName=源对象名字, Path=源对象名字的属性}  //Path除了可以直接绑定属性之外，还可以绑定属性的属性
   另外，如果绑定失败时，WPF不会引发异常来告知绑定失败的原因。然而在调试模式下，你可以在输出窗口来查看绑定失败的信息
 
-2.绑定模式
+2.绑定模式(BindingElement.xaml)
   要支持双向绑定，只需要设置Binding对象的Mode属性为TwoWay即可。{Binding ElementName=sliderFontSize,Path=Value,Mode=TwoWay}
   Mode属性除了可以设置OneWay，TwoWay值外，还可以设置Default、OneTime和OneWayToSource
   通过代码方式动态绑定：还可以通过使用BindingOperations类的ClearBinding方法来移除数据绑定。还可以使用ClearAllBindings移除一个元素的所有数据绑定
@@ -17,7 +17,7 @@ WPF绑定可以理解为一种关系，该关系告诉WPF从一个源对象提�
    binding.Mode = BindingMode.TwoWay;
    lbtext.SetBinding(TextBlock.FontSizeProperty, binding);
 
-3.绑定的更新
+3.绑定的更新(BindingElement.xaml)
   当使用OneWay或TwoWay绑定时，改变后的值会立即从源传播到目标。然而，从目标到源传播未必会立即发生。
   它们的行为是由Binding.UpdateSourceTrigger属性控制。Explicit:UpdateSource时生效  LostFocus:失去焦点  PropertyChanged:依赖属性改变。默认大多是PropertyChanged，文本框是LostFocus
   注意，UpdateSourceTrigger属性值并不影响目标的更新方式，它仅仅控制TwoWay模式或OneWayToSource模式的绑定更新源的方式

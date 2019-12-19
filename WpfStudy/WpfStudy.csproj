@@ -106,6 +106,21 @@
       <DependentUpon>PptListener.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Annotations.cs" />
+    <Compile Include="ResourceAndStyle\StaticAndDynamicResource.xaml.cs">
+      <DependentUpon>StaticAndDynamicResource.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceAndStyle\StyleHaveKey.xaml.cs">
+      <DependentUpon>StyleHaveKey.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceAndStyle\StyleNoKey.xaml.cs">
+      <DependentUpon>StyleNoKey.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceAndStyle\StyleTrigger.xaml.cs">
+      <DependentUpon>StyleTrigger.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ResourceAndStyle\StyleTriggerByEvent.xaml.cs">
+      <DependentUpon>StyleTriggerByEvent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="RouteEvent\AttachEvent.xaml.cs">
       <DependentUpon>AttachEvent.xaml</DependentUpon>
     </Compile>
@@ -132,6 +147,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Binding\BindingElement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Binding\ResourceDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -195,6 +214,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ResourceAndStyle\StaticAndDynamicResource.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceAndStyle\StyleHaveKey.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceAndStyle\StyleNoKey.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceAndStyle\StyleTrigger.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceAndStyle\StyleTriggerByEvent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="RouteEvent\AttachEvent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -251,6 +290,7 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="ResourceAndStyle\资源和样式" />
     <None Include="RouteEvent\路由事件" />
     <None Include="Template\模板控件" />
   </ItemGroup>

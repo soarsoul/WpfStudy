@@ -1,0 +1,27 @@
+﻿在WPF中包括三种模板：控件模板(表示)、数据模版和面板模板(布局)。它们都继承于FrameworkTemplate基类
+WPF模板其实都是外观的表现形式。数据模板针对控件的数据，修改它可以改变控件绑定的数据表现样子
+
+1，逻辑树和可视树(Tree.xaml)
+  开发人员可以直接操作树中的对象节点来程序对象，从而通过操作该对象来修改程序的表现和行为（这是了解逻辑树和可视化树的主要原因）
+  WPF公开了两个提供树形视图帮助器类：LogicalTreeHelper 和 VisualTreeHelper。逻辑树指的是UI界面的组成元素的结构。可视化树是逻辑树的扩展版本，它将元素分成更小的部分
+
+2,控件模板(Control.xaml)
+  首先在资源集合中创建一个ControlTemplate，并指定key标记，然后赋值到控件的Template属性中。
+
+3,数据模板(Data.xaml)
+  首先在资源集合中创建一个数据模板，并设置key标签。然后将key赋值到控件的CellTemplate或ContentTemplate或ItemTemplate属性上即可
+  数据模板是数据的外衣，数据模板是一段定义如何绑定数据对象的XAML标记，
+  有两种类型的控件支持数据模板：
+  1）内容控件通过ContentTemplate属性支持数据模板。内容模板用于显示任何放在Content属性中的内容。
+  2) 列表控件，即继承自ItemsControl类的控件，通过ItemPlate属性支持数据模板。该模板用于显示由ItemSource提供集合中的每一项。
+  基于列表的模板实际上是以内容控件模板为基础的，因为列表中的每一项由一个内容控件包装的。如ListBox控件的ListBoxItem元素
+
+4,数据模板与控件模板的关系
+  控件只是数据和行为的载体，至于它本身长什么样子和数据长什么样子都是靠Template决定的。
+  决定控件外观的是ControlTemplate，决定数据外观的是DataTemplate，它们正是Control类的Template和ContentTemplate两个属性的值
+  ControlTemplate内都有一个ContentPresenter，这个ContentPresenter的ContentTemplate就是DataTemplate类型
+
+5,面板模板
+  首先定义一个面板模板在资源集合中，然后将其Key指定给ItemsPanel属性即可
+  ItemsPanelTemplate用于指定项的布局。 ItemsControl 类型具有一个类型为ItemsPanelTemplate 的 ItemsPanel 属性
+  每种ItemsControl都有其默认的ItemsPanelTemplate。对于 ListBox，默认值使用 VirtualizingStackPanel。 对于 MenuItem，默认值使用 WrapPanel。 对于 StatusBar，默认值使用 DockPanel
